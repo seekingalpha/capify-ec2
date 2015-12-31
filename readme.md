@@ -391,6 +391,14 @@ ec2_roles :name=>"web", :options => {:default=>true}
 ec2_roles :name=>"db", :options => {:default=>true}
 ```
 
+For roles set as default, defining tasks by role name and instance names may be skipped, like so:
+
+```ruby
+ec2_roles :name=>"web", :options => {:default=>true, :skip_tasks=>true}
+```
+
+This may be handy in case these tasks would otherwise shadow an existing namespace, for example.
+
 
 
 #### Rolling Deployments

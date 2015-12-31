@@ -254,6 +254,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       instances.each do |instance|
         define_role(role, instance)
       end
+      skip_tasks = role[:options].delete(:skip_tasks)
     end
 
     regions = capify_ec2.determine_regions
@@ -261,8 +262,10 @@ Capistrano::Configuration.instance(:must_exist).load do
       define_regions(region, role)
     end unless regions.nil?
 
-    define_role_roles(role, instances)
-    define_instance_roles(role, instances)
+    if !skip_tasks
+      define_role_roles(role, instances)
+      define_instance_roles(role, instances)
+    end
   end
 
   def define_regions(region, role)
