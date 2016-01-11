@@ -280,14 +280,14 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   def define_instance_roles(role, instances)
     instances.each do |instance|
-      task instance.name.to_sym do
+      task "#{capify_ec2.instance_namespace}#{instance.name}".to_sym do
         define_role(role, instance)
       end
     end
   end
 
   def define_role_roles(role, instances)
-    task role[:name].to_sym do
+    task "#{capify_ec2.role_namespace}#{role[:name]}".to_sym do
       instances.each do |instance|
         define_role(role, instance)
       end

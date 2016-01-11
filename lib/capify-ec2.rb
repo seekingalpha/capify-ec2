@@ -12,7 +12,7 @@ require File.expand_path(File.dirname(__FILE__) + '/capify-ec2/cloudwatch')
 
 class CapifyEc2
 
-  attr_accessor :load_balancer, :instances, :ec2_config
+  attr_accessor :load_balancer, :instances, :ec2_config, :role_namespace, :instance_namespace
 
   unless const_defined? :SLEEP_COUNT
     SLEEP_COUNT = 5
@@ -41,6 +41,11 @@ class CapifyEc2
     @ec2_config[:aws_stages_tag] ||= "Stages"
 
     @ec2_config[:project_tags] << @ec2_config[:project_tag] if @ec2_config[:project_tag]
+
+    if @ec2_config[:namespace_tasks]
+      @role_namespace = 'ec2:role:'
+      @instance_namespace = 'ec2:instance:'
+    end
 
     regions = determine_regions()
 
