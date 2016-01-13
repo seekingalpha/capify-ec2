@@ -6,9 +6,9 @@ module Fog
     class AWS
       class Server
         def contact_point
-          dns_name || public_ip_address || private_ip_address
+          private_ip_address
         end
-        
+
         def name
           tags["Name"] || id
         end
