@@ -59,7 +59,7 @@ class CapifyEc2
         puts "[Capify-EC2] Unable to connect to AWS: #{e}.".red.bold
         exit 1
       end
-      
+
       servers.each do |server|
         @instances << server if server.ready?
       end
@@ -122,7 +122,7 @@ class CapifyEc2
     info_label_width = [@ec2_config[:aws_project_tag], @ec2_config[:aws_stages_tag]].map(&:length).max
     puts "#{@ec2_config[:aws_project_tag].rjust( info_label_width ).bold}: #{@ec2_config[:project_tags].join(', ')}." if @ec2_config[:project_tags].any?
     puts "#{@ec2_config[:aws_stages_tag].rjust( info_label_width ).bold}: #{@ec2_config[:stage]}." unless @ec2_config[:stage].to_s.empty?
-    
+
     # Title row.
     status_output = []
     status_output << 'Num'                                                         .bold
@@ -136,7 +136,7 @@ class CapifyEc2
     status_output << @ec2_config[:aws_options_tag].ljust( column_widths[:options] ).bold if options_present
     status_output << 'CPU'                       .ljust( 16                      ).bold if graph
     puts status_output.join("   ")
-    
+
     desired_instances.each_with_index do |instance, i|
       status_output = []
       status_output << "%02d:" % i
@@ -160,7 +160,7 @@ class CapifyEc2
     end
     puts "Elastic Load Balancers".bold
     puts "#{@ec2_config[:aws_project_tag].bold}: #{@ec2_config[:project_tags].join(', ')}." if @ec2_config[:project_tags].any?
-    
+
     # Set minimum widths for the variable length lb attributes.
     column_widths = { :id_min => 4, :dns_min => 4, :zone_min => 5}
 
@@ -179,7 +179,7 @@ class CapifyEc2
     elbs_found_for_project = false
 
     @elbs.each_with_index do |lb, i|
-      
+
       status_output = []
       sub_output    = []
       lb.instances.each do |instance|
@@ -206,7 +206,7 @@ class CapifyEc2
         status_output << (lb.id || '')                   .ljust( column_widths[:id]   ).green
         status_output << lb.dns_name                     .ljust( column_widths[:dns]  ).blue.bold
         status_output << lb.availability_zones.join(",") .ljust( column_widths[:zone] ).magenta
-      
+
         puts status_output.join("   ")
         puts sub_output.join("\n")
       end
