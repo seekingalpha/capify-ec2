@@ -80,7 +80,13 @@ class CapifyEc2
   end
 
   def determine_regions()
-    @ec2_config[:aws_params][:regions] || [@ec2_config[:aws_params][:region]]
+    if @ec2_config[:aws_params]
+      regions = @ec2_config[:aws_params][:regions] || @ec2_config[:aws_params][:region]
+    end
+    if regions.nil?
+      regions = ENV['AWS_DEFAULT_REGION']
+    end
+    [*regions]
   end
 
   def aws_access_key_id
@@ -254,7 +260,7 @@ class CapifyEc2
   end
 
   def elb
-    Fog::AWS::ELB.new({:region => @ec2_config[:aws_params][:region]}.merge!(security_credentials))
+    Fog::AWS::ELB.new({:region => determine_regions[0]}.merge!(security_credentials))
   end
 
   def get_load_balancer_by_instance(instance_id)
